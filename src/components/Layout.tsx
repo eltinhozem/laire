@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { PlusCircle } from 'lucide-react';
 import Logo from './Logo';

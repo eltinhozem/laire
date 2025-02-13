@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PlusCircle, Upload } from 'lucide-react';
 import { supabase } from '../config/supabase';
+import Pedra from '../Pedra/pedra'; // Importa o componente de pedra
 import {
   formContainer,
   formTitle,
@@ -12,11 +13,6 @@ import {
   stoneHeader,
   stoneTitle,
   addStoneButton,
-  uploadContainer,
-  uploadIcon,
-  uploadText,
-  uploadLink,
-  uploadInfo,
   textAreaField,
   actionButtonsContainer,
   cancelButton,
@@ -48,6 +44,8 @@ export default function JewelryForm() {
     observations: '',
   });
 
+  const [stones, setStones] = useState<any[]>([]); // Array de pedras
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -56,13 +54,27 @@ export default function JewelryForm() {
     });
   };
 
+  const addStone = () => {
+    setStones([...stones, {}]); // Adiciona uma nova pedra ao array
+  };
+
+  const removeStone = (index: number) => {
+    setStones(stones.filter((_, i) => i !== index)); // Remove a pedra pelo índice
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Combina os dados do formulário com as pedras
+    const jewelryData = {
+      ...formData,
+      stones: stones, // Adiciona as pedras ao objeto de dados
+    };
 
     // Envia os dados para o Supabase
     const { data, error } = await supabase
       .from('jewelry')
-      .insert([formData]);
+      .insert([jewelryData]);
 
     if (error) {
       console.error('Erro ao salvar joia:', error);
@@ -81,6 +93,7 @@ export default function JewelryForm() {
         client_name: '',
         observations: '',
       });
+      setStones([]); // Limpa as pedras
     }
   };
 
@@ -233,6 +246,31 @@ export default function JewelryForm() {
               onChange={handleChange}
               className={inputField}
             />
+          </div>
+        </div>
+
+        {/* Pedras */}
+        <div>
+          <div className={stoneHeader}>
+            <h3 className={stoneTitle}>Pedras</h3>
+            <button
+              type="button"
+              onClick={addStone}
+              className={addStoneButton}
+            >
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Adicionar Pedra
+            </button>
+          </div>
+
+          <div className={stoneSection}>
+            {stones.map((_, index) => (
+              <Pedra
+                key={index}
+                index={index}
+                onRemove={removeStone}
+              />
+            ))}
           </div>
         </div>
 
