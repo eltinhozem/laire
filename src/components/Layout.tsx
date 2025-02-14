@@ -4,15 +4,17 @@ import Logo from './Logo';
 
 export default function Layout() {
   const location = useLocation();
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm">
         <div className="px-4">
           <div className="flex justify-between h-16 items-center">
-            <Link to="/" className="flex items-center">
-              <Logo size="small" color="url(#dDourado)" />
+            {/* Adicionamos "mt-2" para dar um espaçamento no topo */}
+            <Link to="/" className="flex items-center mt-6">
+              <Logo size="large" color="url(#dDourado)" />
             </Link>
+
             {location.pathname !== '/register' && (
               <Link
                 to="/register"

@@ -9,7 +9,7 @@ export type LogoProps = {
 
 const Logo = ({
   color = 'url(#dDourado)',
-  size = 'medium',
+  size = 'large',
   hideOnMobile = false,
   className = ''
 }: LogoProps) => {
@@ -18,7 +18,7 @@ const Logo = ({
       case 'small':
         return '6rem';
       case 'large':
-        return '18rem';
+        return '13rem';
       default:
         return '10rem';
     }

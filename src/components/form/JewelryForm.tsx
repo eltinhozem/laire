@@ -13,6 +13,7 @@ import {
   stoneHeader,
   stoneTitle,
   addStoneButton,
+  
   textAreaField,
   actionButtonsContainer,
   cancelButton,
@@ -31,6 +32,17 @@ interface JewelryFormData {
   observations: string;
 }
 
+interface Stone {
+  stone_type: string;
+  cut: string;
+  quantity: number;
+  quilates?: number;
+  pts?: number;
+  largura?: string;
+  altura?: string;
+  comprimento?: string;
+}
+
 export default function JewelryForm() {
   const [formData, setFormData] = useState<JewelryFormData>({
     reference_name: '',
@@ -44,7 +56,7 @@ export default function JewelryForm() {
     observations: '',
   });
 
-  const [stones, setStones] = useState<any[]>([]); // Array de pedras
+  const [stones, setStones] = useState<Stone[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -55,11 +67,11 @@ export default function JewelryForm() {
   };
 
   const addStone = () => {
-    setStones([...stones, {}]); // Adiciona uma nova pedra ao array
+    setStones([...stones, { stone_type: '', cut: 'Round', quantity: 1 }]);
   };
 
   const removeStone = (index: number) => {
-    setStones(stones.filter((_, i) => i !== index)); // Remove a pedra pelo índice
+    setStones(stones.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,6 +90,7 @@ export default function JewelryForm() {
 
     if (error) {
       console.error('Erro ao salvar joia:', error);
+      alert('Erro ao salvar joia. Verifique o console para mais detalhes.');
     } else {
       console.log('Joia salva com sucesso:', data);
       alert('Joia salva com sucesso!');
@@ -264,11 +277,17 @@ export default function JewelryForm() {
           </div>
 
           <div className={stoneSection}>
-            {stones.map((_, index) => (
+            {stones.map((stone, index) => (
               <Pedra
                 key={index}
                 index={index}
+                stone={stone}
                 onRemove={removeStone}
+                onChange={(updatedStone) => {
+                  const updatedStones = [...stones];
+                  updatedStones[index] = updatedStone;
+                  setStones(updatedStones);
+                }}
               />
             ))}
           </div>

@@ -1,16 +1,17 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import JewelryForm from './components/form/JewelryForm';
-import JewelrySearch from './components/search/JewelrySearch';
 import Layout from './components/Layout';
 import Info from './components/info';
+import Login from './login/login';
+import JewelrySearch from './components/search/JewelrySearch';
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<JewelrySearch />} />
+      <Routes>        
+          <Route index element={<Login />} />
+          <Route path="/" element={<Layout />}>
+          <Route path="/search" element={<JewelrySearch />} />
           <Route path="/register" element={<JewelryForm />} />
           <Route path="/info" element={<Info />} />
         </Route>
